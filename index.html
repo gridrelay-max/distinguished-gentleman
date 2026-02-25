@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gentleman's Blade — Classic American Barbershop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Special+Elite&family=Rye&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================
+   CSS VARIABLES & RESET
+============================================ */
+:root {
+  --red: #C8102E;
+  --white: #F5F0E8;
+  --blue: #002868;
+  --blue-mid: #1a3a7a;
+  --beige: #E8DCC8;
+  --beige-dark: #D4C5A9;
+  --ink: #1A1008;
+  --gold: #C8960C;
+  --stripe-red: #C8102E;
+  --stripe-white: #F5F0E8;
+  --stripe-blue: #002868;
+  --border: 4px solid var(--ink);
+  --border-thick: 6px solid var(--ink);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--beige);
+  color: var(--ink);
+  font-family: 'Courier Prime', monospace;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* Noise texture via SVG */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E"),
+    none;
+  background-size: 200px 200px, auto;
+}
+
+/* ============================================
+   TYPOGRAPHY
+============================================ */
+h1, h2, h3 { font-family: 'Rye', serif; letter-spacing: 0.04em; }
+h4, h5 { font-family: 'Alfa Slab One', serif; }
+.subtitle, .label { font-family: 'Special Elite', cursive; }
+p, li, td, th { font-family: 'Courier Prime', monospace; }
+
+/* ============================================
+   BARBER POLE STRIPE DIVIDER
+============================================ */
+.pole-divider {
+  height: 18px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--red) 0px,
+    var(--red) 30px,
+    var(--white) 30px,
+    var(--white) 60px,
+    var(--blue) 60px,
+    var(--blue) 90px
+  );
+  border-top: 3px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+}
+
+.pole-divider-sm {
+  height: 10px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--red) 0px,
+    var(--red) 20px,
+    var(--white) 20px,
+    var(--white) 40px,
+    var(--blue) 40px,
+    var(--blue) 60px
+  );
+  border-top: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  margin: 2rem 0;
+}
+
+/* ============================================
+   NAVIGATION
+============================================ */
+nav {
+  background-color: var(--blue);
+  border-bottom: var(--border-thick);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 2rem;
+}
+
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+
+.nav-logo {
+  font-family: 'Rye', serif;
+  font-size: 1.3rem;
+  color: var(--white);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.nav-logo span {
+  color: var(--gold);
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 0;
+}
+
+.nav-links li a {
+  display: block;
+  padding: 0 1.2rem;
+  color: var(--beige);
+  text-decoration: none;
+  font-family: 'Special Elite', cursive;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 64px;
+  border-right: 2px solid rgba(255,255,255,0.15);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.nav-links li a:hover {
+  background-color: var(--red);
+  color: var(--white);
+}
+
+.nav-book-btn {
+  background-color: var(--red);
+  color: var(--white) !important;
+  border-left: 3px solid var(--gold) !important;
+  border-right: 3px solid var(--gold) !important;
+  font-weight: bold;
+}
+
+.nav-book-btn:hover {
+  background-color: var(--gold) !important;
+  color: var(--ink) !important;
+}
+
+/* ============================================
+   HERO SECTION
+============================================ */
+.hero {
+  background-color: var(--white);
+  border-bottom: var(--border-thick);
+  position: relative;
+  overflow: hidden;
+  min-height: 88vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-top-bar {
+  background-color: var(--red);
+  padding: 0.6rem 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  border-bottom: var(--border);
+}
+
+.hero-top-bar span {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+.hero-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  align-items: stretch;
+}
+
+.hero-content {
+  padding: 4rem 3rem 4rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: var(--border-thick);
+}
+
+.hero-badge {
+  display: inline-block;
+  background-color: var(--blue);
+  color: var(--gold);
+  font-family: 'Special Elite', cursive;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border: 2px solid var(--gold);
+  margin-bottom: 1.5rem;
+  width: fit-content;
+}
+
+.hero h1 {
+  font-size: clamp(3rem, 6vw, 5.5rem);
+  line-height: 1.0;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+  text-transform: uppercase;
+}
+
+.hero h1 .accent {
+  color: var(--red);
+  display: block;
+}
+
+.hero-tagline {
+  font-family: 'Special Elite', cursive;
+  font-size: 1.1rem;
+  color: var(--blue);
+  letter-spacing: 0.08em;
+  margin: 1rem 0 2rem;
+  padding-top: 1rem;
+  border-top: 3px solid var(--ink);
+}
+
+.hero-desc {
+  font-size: 0.95rem;
+  color: #5a4a30;
+  max-width: 420px;
+  margin-bottom: 2.5rem;
+  line-height: 1.8;
+}
+
+/* TICKET BUTTON */
+.ticket-btn {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  width: fit-content;
+}
+
+.ticket-btn .ticket-inner {
+  display: flex;
+  align-items: center;
+  background-color: var(--red);
+  color: var(--white);
+  font-family: 'Rye', serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 1rem 2.2rem;
+  border: 3px solid var(--ink);
+  box-shadow: 5px 5px 0 var(--ink);
+  transition: all 0.2s ease;
+  gap: 0.8rem;
+  position: relative;
+}
+
+/* Ticket notches */
+.ticket-btn .ticket-inner::before,
+.ticket-btn .ticket-inner::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  background-color: var(--beige);
+  border-radius: 50%;
+  border: 3px solid var(--ink);
+}
+.ticket-btn .ticket-inner::before { left: -7px; }
+.ticket-btn .ticket-inner::after { right: -7px; }
+
+.ticket-btn:hover .ticket-inner {
+  background-color: var(--blue);
+  box-shadow: 3px 3px 0 var(--ink);
+  transform: translate(2px, 2px);
+}
+
+.ticket-stars {
+  color: var(--gold);
+  font-size: 0.9rem;
+}
+
+.hero-visual {
+  background-color: var(--blue);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative barber pole */
+.barber-pole-deco {
+  width: 80px;
+  height: 280px;
+  border: 4px solid var(--ink);
+  border-radius: 40px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  position: relative;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--red) 0px,
+    var(--red) 20px,
+    var(--white) 20px,
+    var(--white) 40px,
+    var(--blue-mid) 40px,
+    var(--blue-mid) 60px
+  );
+  box-shadow: 6px 6px 0 var(--gold), 6px 6px 0 2px var(--ink);
+  animation: poleSpin 4s linear infinite;
+}
+
+@keyframes poleSpin {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 120px; }
+}
+
+.barber-pole-deco::before,
+.barber-pole-deco::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 30px;
+  background: var(--gold);
+  border-bottom: 3px solid var(--ink);
+}
+.barber-pole-deco::before { top: 0; }
+.barber-pole-deco::after { bottom: 0; border-bottom: none; border-top: 3px solid var(--ink); }
+
+.hero-est {
+  font-family: 'Rye', serif;
+  color: var(--gold);
+  font-size: 3rem;
+  text-align: center;
+  line-height: 1.1;
+  text-shadow: 3px 3px 0 var(--ink);
+}
+
+.hero-est small {
+  display: block;
+  font-family: 'Special Elite', cursive;
+  font-size: 0.75rem;
+  color: var(--beige);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  margin-bottom: 0.3rem;
+}
+
+.hero-hours-box {
+  margin-top: 2rem;
+  border: 2px solid var(--gold);
+  padding: 1rem 1.5rem;
+  text-align: center;
+  background-color: rgba(0,0,0,0.3);
+}
+
+.hero-hours-box .label {
+  font-size: 0.65rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.hero-hours-box p {
+  color: var(--beige);
+  font-size: 0.85rem;
+  line-height: 1.8;
+}
+
+/* ============================================
+   SECTION HEADERS
+============================================ */
+.section-header {
+  text-align: center;
+  padding: 3.5rem 2rem 2rem;
+  position: relative;
+}
+
+.section-header .top-label {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.7rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--red);
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.section-header h2 {
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  text-transform: uppercase;
+  line-height: 1.0;
+  color: var(--ink);
+  position: relative;
+  display: inline-block;
+}
+
+.section-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0; right: 0;
+  height: 5px;
+  background: var(--red);
+}
+
+.section-header .sub {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.9rem;
+  color: #6a5a40;
+  max-width: 500px;
+  margin: 1.5rem auto 0;
+  font-style: italic;
+}
+
+/* ============================================
+   SERVICES / PRICE MENU
+============================================ */
+#services {
+  background-color: var(--white);
+  border-top: var(--border-thick);
+  border-bottom: var(--border-thick);
+  padding-bottom: 4rem;
+}
+
+.menu-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.menu-frame {
+  border: var(--border-thick);
+  background: var(--beige);
+  position: relative;
+  box-shadow: 8px 8px 0 var(--ink);
+}
+
+/* Corner ornaments */
+.menu-frame::before {
+  content: '✦ BILL OF FARE ✦';
+  position: absolute;
+  top: -1px; left: 50%;
+  transform: translateX(-50%);
+  background: var(--red);
+  color: var(--gold);
+  font-family: 'Special Elite', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  padding: 0.3rem 2rem;
+  border: 2px solid var(--ink);
+  border-top: none;
+  white-space: nowrap;
+}
+
+.menu-header-block {
+  background: var(--blue);
+  padding: 2rem;
+  text-align: center;
+  border-bottom: var(--border-thick);
+}
+
+.menu-header-block h3 {
+  font-family: 'Rye', serif;
+  color: var(--gold);
+  font-size: 2rem;
+  text-shadow: 2px 2px 0 var(--ink);
+  letter-spacing: 0.1em;
+}
+
+.menu-header-block p {
+  color: var(--beige);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  margin-top: 0.5rem;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.menu-col {
+  padding: 2rem;
+}
+
+.menu-col:first-child {
+  border-right: var(--border-thick);
+}
+
+.menu-col-title {
+  font-family: 'Alfa Slab One', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.menu-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+  gap: 0.5rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px dashed var(--beige-dark);
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.menu-item-left .item-name {
+  font-family: 'Special Elite', cursive;
+  font-size: 1rem;
+  color: var(--ink);
+  display: block;
+}
+
+.menu-item-left .item-desc {
+  font-size: 0.75rem;
+  color: #7a6a50;
+  font-style: italic;
+  display: block;
+  margin-top: 0.1rem;
+}
+
+.menu-dots {
+  flex: 1;
+  border-bottom: 2px dotted #bbb;
+  margin: 0 0.5rem;
+  margin-bottom: 4px;
+}
+
+.menu-price {
+  font-family: 'Alfa Slab One', serif;
+  font-size: 1.1rem;
+  color: var(--blue);
+  white-space: nowrap;
+}
+
+.menu-footer-block {
+  background: var(--red);
+  padding: 1rem 2rem;
+  border-top: var(--border-thick);
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  align-items: center;
+}
+
+.menu-footer-block span {
+  font-family: 'Special Elite', cursive;
+  color: var(--white);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+}
+
+.menu-footer-block .star {
+  color: var(--gold);
+  font-size: 1.2rem;
+}
+
+/* ============================================
+   BARBERS SECTION
+============================================ */
+#barbers {
+  background-color: var(--blue);
+  padding-bottom: 4rem;
+  border-bottom: var(--border-thick);
+}
+
+#barbers .section-header h2 {
+  color: var(--gold);
+}
+
+#barbers .section-header h2::after {
+  background: var(--gold);
+}
+
+#barbers .section-header .top-label {
+  color: var(--beige);
+}
+
+#barbers .section-header .sub {
+  color: var(--beige-dark);
+}
+
+.barbers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  padding: 0 2rem;
+}
+
+.barber-card {
+  border: var(--border-thick);
+  background: var(--beige);
+  margin: -3px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s ease;
+}
+
+.barber-card:hover {
+  transform: translateY(-6px);
+  z-index: 2;
+}
+
+.barber-photo-frame {
+  position: relative;
+  background: #1a1a1a;
+  overflow: hidden;
+  aspect-ratio: 3/4;
+  border-bottom: var(--border-thick);
+}
+
+.barber-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.15);
+  opacity: 0.9;
+  transition: filter 0.4s ease;
+}
+
+.barber-card:hover .barber-photo-frame img {
+  filter: grayscale(80%) contrast(1.1);
+}
+
+/* Placeholder portrait for barbers */
+.barber-portrait-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(160deg, #2a2a2a 0%, #0a0a0a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.barber-portrait-placeholder .silhouette {
+  width: 80px;
+  height: 80px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 50%;
+  border: 3px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.barber-portrait-placeholder .barber-initial {
+  font-family: 'Rye', serif;
+  font-size: 3rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1;
+}
+
+.barber-photo-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--gold);
+  border: 2px solid var(--ink);
+  padding: 0.3rem 0.6rem;
+  font-family: 'Special Elite', cursive;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.barber-info {
+  padding: 1.5rem;
+  background: var(--beige);
+}
+
+.barber-name {
+  font-family: 'Rye', serif;
+  font-size: 1.4rem;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 0.3rem;
+}
+
+.barber-title {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.8rem;
+}
+
+.barber-bio {
+  font-size: 0.8rem;
+  color: #5a4a30;
+  line-height: 1.7;
+  border-top: 2px dashed var(--beige-dark);
+  padding-top: 0.8rem;
+}
+
+.barber-specialties {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.spec-tag {
+  background: var(--blue);
+  color: var(--beige);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--ink);
+}
+
+/* ============================================
+   ABOUT / STORY SECTION
+============================================ */
+#about {
+  background: var(--beige);
+  border-bottom: var(--border-thick);
+  padding: 0;
+  overflow: hidden;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 100%;
+}
+
+.about-red-block {
+  background: var(--red);
+  padding: 5rem 3rem 5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: var(--border-thick);
+}
+
+.about-red-block h2 {
+  color: var(--white);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+  text-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+}
+
+.about-red-block h2 em {
+  color: var(--gold);
+  font-style: normal;
+  display: block;
+}
+
+.about-red-block p {
+  color: rgba(255,255,255,0.9);
+  line-height: 1.9;
+  font-size: 0.9rem;
+  max-width: 420px;
+}
+
+.about-red-block p + p {
+  margin-top: 1rem;
+}
+
+.about-stats {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid rgba(255,255,255,0.3);
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Rye', serif;
+  font-size: 2.5rem;
+  color: var(--gold);
+  line-height: 1;
+  text-shadow: 2px 2px 0 var(--ink);
+}
+
+.stat-label {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-top: 0.3rem;
+}
+
+.about-pattern-block {
+  background: var(--white);
+  padding: 5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.about-pattern-block::before {
+  content: '';
+  position: absolute;
+  inset: 2rem;
+  border: 3px solid var(--beige-dark);
+  pointer-events: none;
+}
+
+.checkerboard-deco {
+  width: 200px;
+  height: 200px;
+  background-image: 
+    repeating-conic-gradient(var(--blue) 0% 25%, transparent 0% 50%);
+  background-size: 20px 20px;
+  opacity: 0.1;
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+}
+
+.about-values {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 380px;
+}
+
+.value-item {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+  padding: 1.2rem 0;
+  border-bottom: 2px dashed var(--beige-dark);
+}
+
+.value-item:last-child { border-bottom: none; }
+
+.value-icon {
+  width: 46px;
+  height: 46px;
+  background: var(--blue);
+  border: 3px solid var(--ink);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.value-text h4 {
+  font-family: 'Alfa Slab One', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.3rem;
+}
+
+.value-text p {
+  font-size: 0.8rem;
+  color: #6a5a40;
+  line-height: 1.6;
+}
+
+/* ============================================
+   TESTIMONIALS
+============================================ */
+#testimonials {
+  background: var(--ink);
+  padding: 4rem 2rem;
+  border-bottom: var(--border-thick);
+}
+
+#testimonials .section-header h2 {
+  color: var(--gold);
+}
+#testimonials .section-header h2::after { background: var(--gold); }
+#testimonials .section-header .top-label { color: var(--beige-dark); }
+#testimonials .section-header .sub { color: #8a7a60; }
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  max-width: 1100px;
+  margin: 2.5rem auto 0;
+}
+
+.testimonial-card {
+  border: var(--border);
+  border-color: rgba(255,255,255,0.15);
+  padding: 2rem 1.8rem;
+  position: relative;
+  margin: -2px;
+  background: rgba(255,255,255,0.03);
+  transition: background 0.3s ease;
+}
+
+.testimonial-card:hover {
+  background: rgba(255,255,255,0.07);
+}
+
+.quote-mark {
+  font-family: 'Rye', serif;
+  font-size: 5rem;
+  color: var(--red);
+  line-height: 0.6;
+  margin-bottom: 1rem;
+  display: block;
+  opacity: 0.7;
+}
+
+.testimonial-text {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.85rem;
+  color: var(--beige);
+  line-height: 1.9;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1rem;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  background: var(--blue);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Rye', serif;
+  color: var(--gold);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.author-name {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  display: block;
+}
+
+.author-note {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.stars {
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.8rem;
+}
+
+/* ============================================
+   BOOK SECTION
+============================================ */
+#book {
+  background: var(--beige);
+  padding: 5rem 2rem;
+}
+
+.book-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--white);
+  border: var(--border-thick);
+  box-shadow: 10px 10px 0 var(--ink);
+  overflow: hidden;
+}
+
+.book-header {
+  background: var(--blue);
+  padding: 2rem;
+  text-align: center;
+  border-bottom: var(--border-thick);
+}
+
+.book-header h2 {
+  font-family: 'Rye', serif;
+  color: var(--gold);
+  font-size: 2rem;
+  text-shadow: 3px 3px 0 var(--ink);
+  text-transform: uppercase;
+}
+
+.book-header p {
+  color: var(--beige);
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  letter-spacing: 0.1em;
+}
+
+.book-body {
+  padding: 3rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  font-family: 'Special Elite', cursive;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  border: 3px solid var(--ink);
+  background: var(--beige);
+  padding: 0.7rem 1rem;
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.9rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  appearance: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--red);
+  box-shadow: 3px 3px 0 var(--red);
+}
+
+.form-group textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-submit {
+  text-align: center;
+  padding-top: 1rem;
+}
+
+/* ============================================
+   FOOTER
+============================================ */
+footer {
+  background: var(--ink);
+  border-top: var(--border-thick);
+  padding: 3rem 2rem 1.5rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 3rem;
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+}
+
+.footer-brand .logo-text {
+  font-family: 'Rye', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.footer-brand .tagline {
+  font-family: 'Special Elite', cursive;
+  color: rgba(255,255,255,0.4);
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.footer-brand p {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+  line-height: 1.8;
+  margin-top: 1rem;
+  max-width: 300px;
+}
+
+.footer-col h5 {
+  font-family: 'Alfa Slab One', serif;
+  color: var(--gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col ul li {
+  margin-bottom: 0.6rem;
+}
+
+.footer-col ul li a {
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  font-size: 0.8rem;
+  transition: color 0.2s;
+}
+
+.footer-col ul li a:hover {
+  color: var(--gold);
+}
+
+.footer-col p {
+  color: rgba(255,255,255,0.5);
+  font-size: 0.8rem;
+  line-height: 1.8;
+}
+
+.footer-bottom {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-bottom p {
+  color: rgba(255,255,255,0.3);
+  font-size: 0.75rem;
+}
+
+/* ============================================
+   FLOATING BOOK BTN (mobile)
+============================================ */
+.pole-accent-bar {
+  height: 8px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--red) 0px, var(--red) 16px,
+    var(--white) 16px, var(--white) 32px,
+    var(--blue) 32px, var(--blue) 48px
+  );
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 900px) {
+  .hero-main { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .menu-grid { grid-template-columns: 1fr; }
+  .menu-col:first-child { border-right: none; border-bottom: var(--border-thick); }
+  .barbers-grid { grid-template-columns: 1fr; gap: 0; }
+  .testimonials-grid { grid-template-columns: 1fr; }
+  .about-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .form-row { grid-template-columns: 1fr; }
+  .nav-links { display: none; }
+}
+
+/* ============================================
+   UTILITY
+============================================ */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.text-center { text-align: center; }
+.mt-2 { margin-top: 2rem; }
+
+/* Scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- ============================================
+   NAVIGATION
+============================================ -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">✂ Gentleman's <span>Blade</span></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#barbers">Our Barbers</a></li>
+      <li><a href="#about">Our Story</a></li>
+      <li><a href="#testimonials">Testimonials</a></li>
+      <li><a href="#book" class="nav-book-btn">Book Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============================================
+   HERO
+============================================ -->
+<section class="hero">
+  <div class="hero-top-bar">
+    <span>✦ Est. 1952 ✦</span>
+    <span>Downtown · Main Street</span>
+    <span>Open Mon–Sat · 8am–7pm</span>
+  </div>
+
+  <div class="hero-main">
+    <!-- Content Left -->
+    <div class="hero-content">
+      <span class="hero-badge">✦ Classic American Barbershop ✦</span>
+
+      <h1>
+        Gentleman's
+        <span class="accent">Blade</span>
+      </h1>
+
+      <p class="hero-tagline">Where Every Cut Tells a Story</p>
+
+      <p class="hero-desc">
+        Since 1952, we've been the neighborhood barbershop where real men come
+        to look sharp. Straight razor shaves, precision cuts, and old-world
+        craftsmanship — no appointments needed, but we love 'em.
+      </p>
+
+      <a href="#book" class="ticket-btn">
+        <span class="ticket-inner">
+          <span class="ticket-stars">✦</span>
+          Book Your Appointment
+          <span class="ticket-stars">✦</span>
+        </span>
+      </a>
+    </div>
+
+    <!-- Visual Right -->
+    <div class="hero-visual">
+      <div class="barber-pole-deco"></div>
+
+      <div class="hero-est">
+        <small>Established</small>
+        1952
+      </div>
+
+      <div class="hero-hours-box">
+        <span class="label">Hours of Operation</span>
+        <p>
+          Mon–Fri · 8:00 am – 7:00 pm<br>
+          Saturday · 8:00 am – 5:00 pm<br>
+          Sunday · Closed
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pole-divider"></div>
+
+<!-- ============================================
+   SERVICES / MENU
+============================================ -->
+<section id="services">
+  <div class="section-header">
+    <span class="top-label">— What We Offer —</span>
+    <h2>The Bill of Fare</h2>
+    <p class="sub">Crafted with care, finished with pride. All prices include a hot towel &amp; neck shave.</p>
+  </div>
+
+  <div class="menu-container reveal">
+    <div class="menu-frame">
+      <div class="menu-header-block">
+        <h3>✦ Gentleman's Blade ✦</h3>
+        <p>MAIN STREET · EST. 1952 · OPEN DAILY</p>
+      </div>
+
+      <div class="menu-grid">
+        <!-- Left column -->
+        <div class="menu-col">
+          <div class="menu-col-title">✂ The Cut</div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">The Classic</span>
+              <span class="item-desc">Scissor cut, comb finish</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$30</span>
+          </div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">The Executive</span>
+              <span class="item-desc">Fade + taper + product finish</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$40</span>
+          </div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">The Flattop</span>
+              <span class="item-desc">Old school squared precision</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$45</span>
+          </div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">The Pompadour</span>
+              <span class="item-desc">Volume cut, sculpted style</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$45</span>
+          </div>
+
+          <div class="menu-col-title" style="margin-top:1.5rem">🪒 The Shave</div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">Hot Towel Shave</span>
+              <span class="item-desc">Single straight razor, hot lather</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$35</span>
+          </div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">Royal Shave</span>
+              <span class="item-desc">Double pass + aftershave balm</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$50</span>
+          </div>
+        </div>
+
+        <!-- Right column -->
+        <div class="menu-col">
+          <div class="menu-col-title">✦ The Combo</div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">Cut &amp; Shave</span>
+              <span class="item-desc">Classic cut with hot towel shave</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$55</span>
+          </div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">The Full Works</span>
+              <span class="item-desc">Cut, shave + scalp treatment</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$75</span>
+          </div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">Father &amp; Son</span>
+              <span class="item-desc">Two classic cuts, one great memory</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$50</span>
+          </div>
+
+          <div class="menu-col-title" style="margin-top:1.5rem">🧴 The Extras</div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">Beard Trim &amp; Shape</span>
+              <span class="item-desc">Line up + condition</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$20</span>
+          </div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">Scalp Massage</span>
+              <span class="item-desc">10-minute hot oil treatment</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$15</span>
+          </div>
+
+          <div class="menu-item">
+            <div class="menu-item-left">
+              <span class="item-name">Kids Cut (12 &amp; under)</span>
+              <span class="item-desc">Patient &amp; precise, always</span>
+            </div>
+            <div class="menu-dots"></div>
+            <span class="menu-price">$20</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-footer-block">
+        <span>Walk-ins Welcome</span>
+        <span class="star">✦</span>
+        <span>Cash &amp; Card Accepted</span>
+        <span class="star">✦</span>
+        <span>Gratuity Appreciated</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pole-divider"></div>
+
+<!-- ============================================
+   BARBERS
+============================================ -->
+<section id="barbers">
+  <div class="section-header">
+    <span class="top-label">— The Men Behind the Chair —</span>
+    <h2>Meet Our Barbers</h2>
+    <p class="sub">Three decades of combined experience. Zero excuses for a bad haircut.</p>
+  </div>
+
+  <div class="barbers-grid">
+
+    <!-- Barber 1 -->
+    <div class="barber-card reveal">
+      <div class="barber-photo-frame">
+        <div class="barber-portrait-placeholder">
+          <div class="barber-initial">E</div>
+        </div>
+        <div class="barber-photo-badge">Head Barber</div>
+      </div>
+      <div class="barber-info">
+        <div class="barber-name">Eddie Malone</div>
+        <div class="barber-title">Master Barber · 22 Years</div>
+        <p class="barber-bio">
+          Eddie learned his trade from his father in a one-chair shop in New Jersey.
+          His straight razor work is the stuff of legend on Main Street.
+        </p>
+        <div class="barber-specialties">
+          <span class="spec-tag">Fades</span>
+          <span class="spec-tag">Straight Razor</span>
+          <span class="spec-tag">Flattops</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barber 2 -->
+    <div class="barber-card reveal" style="transition-delay:0.15s">
+      <div class="barber-photo-frame">
+        <div class="barber-portrait-placeholder">
+          <div class="barber-initial">R</div>
+        </div>
+        <div class="barber-photo-badge">Senior Barber</div>
+      </div>
+      <div class="barber-info">
+        <div class="barber-name">Ray Deluca</div>
+        <div class="barber-title">Senior Barber · 14 Years</div>
+        <p class="barber-bio">
+          Ray brings an artist's eye to every cut. He spent three years training in
+          Chicago before returning home to put Main Street on the map.
+        </p>
+        <div class="barber-specialties">
+          <span class="spec-tag">Pompadours</span>
+          <span class="spec-tag">Texture Cuts</span>
+          <span class="spec-tag">Beards</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barber 3 -->
+    <div class="barber-card reveal" style="transition-delay:0.3s">
+      <div class="barber-photo-frame">
+        <div class="barber-portrait-placeholder">
+          <div class="barber-initial">T</div>
+        </div>
+        <div class="barber-photo-badge">Barber</div>
+      </div>
+      <div class="barber-info">
+        <div class="barber-name">Tommy Cruz</div>
+        <div class="barber-title">Barber · 6 Years</div>
+        <p class="barber-bio">
+          The youngest blade in the shop, Tommy's modern sensibility blends
+          seamlessly with the classic techniques he learned from Eddie.
+        </p>
+        <div class="barber-specialties">
+          <span class="spec-tag">Modern Fades</span>
+          <span class="spec-tag">Line Ups</span>
+          <span class="spec-tag">Kids Cuts</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="pole-divider"></div>
+
+<!-- ============================================
+   ABOUT / STORY
+============================================ -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-red-block">
+      <h2>
+        Not Just a Haircut.
+        <em>A Tradition.</em>
+      </h2>
+
+      <p>
+        Since 1952, Gentleman's Blade has been the beating heart of Main Street.
+        Three generations of barbers. Thousands of haircuts. One unwavering standard:
+        you leave looking sharper than when you walked in.
+      </p>
+      <p>
+        We still use the same hot lather machines, the same badger-hair brushes,
+        and the same straight razors that Eddie's father sharpened on a leather strop.
+        Some things don't need updating.
+      </p>
+
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-number">70+</div>
+          <div class="stat-label">Years Open</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">3</div>
+          <div class="stat-label">Generations</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">50K+</div>
+          <div class="stat-label">Happy Clients</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-pattern-block">
+      <div class="checkerboard-deco"></div>
+      <div class="about-values reveal">
+        <div class="value-item">
+          <div class="value-icon">✂</div>
+          <div class="value-text">
+            <h4>Precision</h4>
+            <p>Every line, every taper, every edge — cut with intention and years of skill.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🪒</div>
+          <div class="value-text">
+            <h4>Craftsmanship</h4>
+            <p>We use only the finest tools and traditional techniques passed down through the decades.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">🤝</div>
+          <div class="value-text">
+            <h4>Community</h4>
+            <p>A barbershop is more than a business. It's where the neighborhood comes together.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <div class="value-icon">⭐</div>
+          <div class="value-text">
+            <h4>Consistency</h4>
+            <p>Walk in a stranger, leave a regular. The same great cut, every single time.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pole-divider"></div>
+
+<!-- ============================================
+   TESTIMONIALS
+============================================ -->
+<section id="testimonials">
+  <div class="section-header">
+    <span class="top-label">— Words from Our Gentlemen —</span>
+    <h2>The Verdict</h2>
+    <p class="sub">Don't take our word for it.</p>
+  </div>
+
+  <div class="testimonials-grid">
+
+    <div class="testimonial-card reveal">
+      <div class="stars">★★★★★</div>
+      <span class="quote-mark">"</span>
+      <p class="testimonial-text">
+        Been coming here every three weeks for twelve years. Eddie knows exactly how
+        I like it without me saying a word. That's not a barber — that's an institution.
+      </p>
+      <div class="testimonial-author">
+        <div class="author-avatar">M</div>
+        <div>
+          <span class="author-name">Mike Caruso</span>
+          <span class="author-note">Regular since 2012</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal" style="transition-delay:0.15s">
+      <div class="stars">★★★★★</div>
+      <span class="quote-mark">"</span>
+      <p class="testimonial-text">
+        I was nervous about a straight razor shave. Ray walked me through the whole
+        thing. Smoothest shave of my life. I'll never go back to cartridge razors again.
+      </p>
+      <div class="testimonial-author">
+        <div class="author-avatar">J</div>
+        <div>
+          <span class="author-name">James Whitfield</span>
+          <span class="author-note">First-timer turned regular</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="testimonial-card reveal" style="transition-delay:0.3s">
+      <div class="stars">★★★★★</div>
+      <span class="quote-mark">"</span>
+      <p class="testimonial-text">
+        Brought my son in for his first "big kid haircut." Tommy was so patient
+        with him. The kid sat perfectly still the whole time. That's talent.
+      </p>
+      <div class="testimonial-author">
+        <div class="author-avatar">D</div>
+        <div>
+          <span class="author-name">David Reyes</span>
+          <span class="author-note">Father of two</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="pole-divider"></div>
+
+<!-- ============================================
+   BOOK SECTION
+============================================ -->
+<section id="book">
+  <div class="section-header">
+    <span class="top-label">— Reserve Your Seat —</span>
+    <h2>Book an Appointment</h2>
+    <p class="sub">Walk-ins always welcome. Appointments guaranteed.</p>
+  </div>
+
+  <div class="book-container reveal">
+    <div class="book-header">
+      <h2>Reserve Your Chair</h2>
+      <p>Fill out the form below and we'll confirm within the hour.</p>
+    </div>
+
+    <div class="pole-accent-bar"></div>
+
+    <div class="book-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Eddie">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Malone">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="(555) 000-0000">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="you@email.com">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Select Your Barber</label>
+          <select>
+            <option value="">— No preference —</option>
+            <option>Eddie Malone</option>
+            <option>Ray Deluca</option>
+            <option>Tommy Cruz</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Service Requested</label>
+          <select>
+            <option value="">— Choose a service —</option>
+            <option>The Classic ($30)</option>
+            <option>The Executive ($40)</option>
+            <option>The Flattop ($45)</option>
+            <option>Hot Towel Shave ($35)</option>
+            <option>Cut & Shave ($55)</option>
+            <option>The Full Works ($75)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Preferred Date</label>
+          <input type="date">
+        </div>
+        <div class="form-group">
+          <label>Preferred Time</label>
+          <select>
+            <option>8:00 AM</option>
+            <option>9:00 AM</option>
+            <option>10:00 AM</option>
+            <option>11:00 AM</option>
+            <option>12:00 PM</option>
+            <option>1:00 PM</option>
+            <option>2:00 PM</option>
+            <option>3:00 PM</option>
+            <option>4:00 PM</option>
+            <option>5:00 PM</option>
+            <option>6:00 PM</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Notes (Optional)</label>
+        <textarea placeholder="Any special requests or notes for your barber..."></textarea>
+      </div>
+
+      <div class="form-submit">
+        <a href="#" class="ticket-btn">
+          <span class="ticket-inner" style="font-size:1rem; padding: 0.9rem 3rem;">
+            <span class="ticket-stars">✦</span>
+            Confirm My Appointment
+            <span class="ticket-stars">✦</span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="pole-divider"></div>
+
+<!-- ============================================
+   FOOTER
+============================================ -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo-text">✂ Gentleman's Blade</span>
+      <span class="tagline">Classic American Barbershop · Est. 1952</span>
+      <p>
+        The neighborhood barbershop on Main Street where every gentleman is treated
+        like a regular, even on his first visit.
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <h5>Quick Links</h5>
+      <ul>
+        <li><a href="#services">Services & Pricing</a></li>
+        <li><a href="#barbers">Meet the Barbers</a></li>
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#book">Book Appointment</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h5>Find Us</h5>
+      <p>
+        142 Main Street<br>
+        Downtown District<br>
+        Mon–Fri: 8am–7pm<br>
+        Sat: 8am–5pm<br>
+        (555) 842-1952
+      </p>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2024 Gentleman's Blade. All rights reserved.</p>
+    <p>✦ Walk-ins welcome ✦ No bad haircuts ✦</p>
+  </div>
+</footer>
+
+<script>
+// Scroll reveal animation
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+reveals.forEach(el => observer.observe(el));
+
+// Active nav highlight on scroll
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop - 100;
+    if (window.scrollY >= sectionTop) {
+      current = section.getAttribute('id');
+    }
+  });
+  navLinks.forEach(link => {
+    link.style.borderBottom = '';
+    if (link.getAttribute('href') === '#' + current) {
+      link.style.borderBottom = '3px solid var(--gold)';
+    }
+  });
+});
+</script>
+
+</body>
+</html>
