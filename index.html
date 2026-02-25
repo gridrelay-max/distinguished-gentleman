@@ -1257,6 +1257,97 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* ============================================
+   PHOTO CAROUSEL (About section)
+============================================ */
+.about-photo-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: var(--border);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+
+.carousel-wrapper {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  flex-shrink: 0;
+}
+
+.carousel-slide img {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--blue);
+  color: var(--white);
+  border: 3px solid var(--ink);
+  font-family: "Rye", serif;
+  font-size: 1.2rem;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+
+.carousel-btn:hover {
+  background: var(--red);
+  transform: translateY(-50%) scale(1.05);
+}
+
+.carousel-prev { left: 0.75rem; }
+.carousel-next { right: 0.75rem; }
+
+.carousel-dots {
+  position: absolute;
+  bottom: 0.6rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.4rem;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 0;
+  background: rgba(245, 240, 232, 0.5);
+  border: 2px solid var(--ink);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.carousel-dot.active {
+  background: var(--red);
+}
+
+@media (max-width: 600px) {
+  .carousel-slide img { height: 220px; }
+  .carousel-btn { width: 36px; height: 36px; font-size: 1rem; }
+}
+
 </style>
 </head>
 <body>
@@ -1637,35 +1728,24 @@ footer {
 
     <div class="about-pattern-block">
       <div class="checkerboard-deco"></div>
-      <div class="about-values reveal">
-        <div class="value-item">
-          <div class="value-icon">✂</div>
-          <div class="value-text">
-            <h4>Precision</h4>
-            <p>Every line, every taper, every edge — cut with intention and years of skill.</p>
+      <div class="about-photo-carousel reveal">
+        <!-- Carousel track -->
+        <div class="carousel-wrapper">
+          <div class="carousel-track" id="carouselTrack">
+            <div class="carousel-slide"><img src="images/outside.jpg" alt="Distinguished Gentleman Barbershop exterior"></div>
+            <div class="carousel-slide"><img src="images/Barbershop.jpg" alt="Barbershop interior"></div>
+            <div class="carousel-slide"><img src="images/inside.jpg" alt="Inside the shop"></div>
+            <div class="carousel-slide"><img src="images/Service1.jpg" alt="Barbershop service"></div>
+            <div class="carousel-slide"><img src="images/Service2.jpg" alt="Professional cut"></div>
+            <div class="carousel-slide"><img src="images/service3.jpg" alt="Expert fade"></div>
+            <div class="carousel-slide"><img src="images/Kidservice.jpg" alt="Kids cut"></div>
           </div>
         </div>
-        <div class="value-item">
-          <div class="value-icon">🪒</div>
-          <div class="value-text">
-            <h4>Craftsmanship</h4>
-            <p>We use only the finest tools and traditional techniques passed down through the decades.</p>
-          </div>
-        </div>
-        <div class="value-item">
-          <div class="value-icon">🤝</div>
-          <div class="value-text">
-            <h4>Community</h4>
-            <p>A barbershop is more than a business. It's where the neighborhood comes together.</p>
-          </div>
-        </div>
-        <div class="value-item">
-          <div class="value-icon">⭐</div>
-          <div class="value-text">
-            <h4>Consistency</h4>
-            <p>Walk in a stranger, leave a regular. The same great cut, every single time.</p>
-          </div>
-        </div>
+        <!-- Controls -->
+        <button class="carousel-btn carousel-prev" id="carouselPrev" aria-label="Previous">&#8592;</button>
+        <button class="carousel-btn carousel-next" id="carouselNext" aria-label="Next">&#8594;</button>
+        <!-- Dots -->
+        <div class="carousel-dots" id="carouselDots"></div>
       </div>
     </div>
   </div>
@@ -1922,5 +2002,49 @@ window.addEventListener('scroll', () => {
 });
 </script>
 
+<script>
+
+/* --- Photo Carousel --- */
+(function() {
+  var track = document.getElementById('carouselTrack');
+  var prev  = document.getElementById('carouselPrev');
+  var next  = document.getElementById('carouselNext');
+  var dotsContainer = document.getElementById('carouselDots');
+  if (!track) return;
+
+  var slides = track.querySelectorAll('.carousel-slide');
+  var total  = slides.length;
+  var current = 0;
+  var autoTimer;
+
+  // Build dots
+  slides.forEach(function(_, i) {
+    var dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+    dot.addEventListener('click', function() { goTo(i); resetTimer(); });
+    dotsContainer.appendChild(dot);
+  });
+
+  function goTo(index) {
+    current = (index + total) % total;
+    track.style.transform = 'translateX(-' + (current * 100) + '%)';
+    dotsContainer.querySelectorAll('.carousel-dot').forEach(function(d, i) {
+      d.classList.toggle('active', i === current);
+    });
+  }
+
+  function resetTimer() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(function() { goTo(current + 1); }, 4000);
+  }
+
+  prev.addEventListener('click', function() { goTo(current - 1); resetTimer(); });
+  next.addEventListener('click', function() { goTo(current + 1); resetTimer(); });
+
+  resetTimer();
+})();
+
+</script>
 </body>
 </html>
